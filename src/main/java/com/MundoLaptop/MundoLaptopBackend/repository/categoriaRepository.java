@@ -1,6 +1,6 @@
 package com.MundoLaptop.MundoLaptopBackend.repository;
 
-public interface categoríaRepository {
+public interface categoriaRepository {
 }
 
 

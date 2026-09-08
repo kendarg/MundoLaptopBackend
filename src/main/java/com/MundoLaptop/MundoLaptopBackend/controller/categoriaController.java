@@ -1,6 +1,6 @@
 package com.MundoLaptop.MundoLaptopBackend.controller;
 
-public class categoríaController {
+public class categoriaController {
 }
 
 
