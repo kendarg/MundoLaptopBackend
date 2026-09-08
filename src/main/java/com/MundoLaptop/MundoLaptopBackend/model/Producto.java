@@ -36,4 +36,14 @@ public class Producto {
     @Column(columnDefinition = "jsonb")
     @org.hibernate.annotations.JdbcTypeCode(org.hibernate.type.SqlTypes.JSON)
     private Map<String, Object> especificaciones;
+
+    //Categoria relationship
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "categoria_id", nullable = false)
+    private Categoria categoria;
+
+    //Marca relationship
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "marca_id", nullable = false)
+    private Marca marca;
 }
