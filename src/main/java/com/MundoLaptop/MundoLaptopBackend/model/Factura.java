@@ -25,13 +25,13 @@ public class Factura {
     private Date fechaFacturacion;
 
     @Column(name = "monto_subtotal", nullable = false)
-    private double montosubtotal;
+    private double montoSubtotal;
 
     @Column(nullable = false)
     private double impuestos;
 
     @Column(name = "monto_total", nullable = false)
-    private double montototal;
+    private double montoTotal;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "venta_id", nullable = false, unique = true)

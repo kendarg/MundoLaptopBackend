@@ -1,6 +1,9 @@
 package com.MundoLaptop.MundoLaptopBackend.dto.UsuarioDTO;
 
-public class UsuarioRequestDTO {
+public record UsuarioRequestDTO(
+    String nombre,
+    String email,
+    String password,
+    int telefono
+) {
 }
-
-
