@@ -29,4 +29,12 @@ public class OrdenDeMantenimiento {
 
     @Column(name = "diagnostico_notas", columnDefinition = "TEXT")
     private String diagnosticoNotas;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cliente_id", nullable = false)
+    private Usuario cliente;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "servicio_id", nullable = false)
+    private Servicio servicio;
 }

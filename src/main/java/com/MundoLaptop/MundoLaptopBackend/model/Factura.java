@@ -32,4 +32,8 @@ public class Factura {
 
     @Column(name = "monto_total", nullable = false)
     private double montototal;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "venta_id", nullable = false, unique = true)
+    private Venta venta;
 }
