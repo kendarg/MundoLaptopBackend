@@ -24,19 +24,6 @@ public class Producto {
     @Column(name = "numero_serie", nullable = true, length = 100)
     private String numeroSerie;
 
-    @Column(nullable = false)
-    private double precio;
-
-    @Column(nullable = false)
-    private int stock;
-
-    @Column(nullable = false, length = 50)
-    private String condicion;
-
-    @Column(columnDefinition = "jsonb")
-    @org.hibernate.annotations.JdbcTypeCode(org.hibernate.type.SqlTypes.JSON)
-    private Map<String, Object> especificaciones;
-
     //Categoria relationship
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "categoria_id", nullable = false)
@@ -46,4 +33,20 @@ public class Producto {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "marca_id", nullable = false)
     private Marca marca;
+
+
+    @Column(nullable = false)
+    private double precio;
+
+    @Column(nullable = false)
+    private int stock;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private CondicionProducto condicion;
+
+    @Column(columnDefinition = "jsonb")
+    @org.hibernate.annotations.JdbcTypeCode(org.hibernate.type.SqlTypes.JSON)
+    private Map<String, Object> especificaciones;
+
 }

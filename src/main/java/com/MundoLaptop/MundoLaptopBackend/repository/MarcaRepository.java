@@ -1,6 +1,13 @@
 package com.MundoLaptop.MundoLaptopBackend.repository;
 
-public interface MarcaRepository {
+import com.MundoLaptop.MundoLaptopBackend.model.Marca;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+
+@Repository
+public interface MarcaRepository extends JpaRepository<Marca, Long> {
+
 }
 
 
