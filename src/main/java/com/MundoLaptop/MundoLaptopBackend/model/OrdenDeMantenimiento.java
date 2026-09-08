@@ -23,7 +23,6 @@ public class OrdenDeMantenimiento {
     private String diagnosticoNotas;
 
     // --- RELACIONES ---
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cliente_id", nullable = false)
     private Usuario usuario;

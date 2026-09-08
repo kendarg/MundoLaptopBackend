@@ -29,5 +29,6 @@ public class Usuario {
     private int telefono;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private RolUsuario rol = RolUsuario.NORMAL;
 }

@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "detalles_venta")
+@Table(name = "detalle_venta")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,8 +21,6 @@ public class DetallesVenta {
 
     @Column(name = "precio_unitario", nullable = false)
     private Double precioUnitario;
-
-    // --- RELACIONES ---
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "venta_id", nullable = false)

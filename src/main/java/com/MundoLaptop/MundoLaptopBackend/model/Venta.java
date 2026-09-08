@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "ventas")
@@ -23,9 +24,14 @@ public class Venta {
     @Column(nullable = false)
     private Double total;
 
-    // --- RELACIONES ---
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cliente_id", nullable = false)
     private Usuario cliente;
+
+
+    @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DetallesVenta> detalles;
+
+    @OneToOne(mappedBy = "venta", cascade = CascadeType.ALL)
+    private Factura factura;
 }
