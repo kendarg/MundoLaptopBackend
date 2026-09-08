@@ -40,6 +40,7 @@ public class DetallesVentaService {
     @Transactional
     public void eliminar(Long id) {
         detallesVentaRepository.deleteById(id);
+
     }
 }
 
