@@ -1,15 +1,15 @@
 package com.MundoLaptop.MundoLaptopBackend.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "Orden_mantenimiento")
+@Getter
+@Setter
 public class OrdenDeMantenimiento {
 
     @Id
