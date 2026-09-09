@@ -1,11 +1,13 @@
 package com.MundoLaptop.MundoLaptopBackend.service;
 
+import com.MundoLaptop.MundoLaptopBackend.dto.OrdenDeMantenimientoDTO.OrdenDeMantenimientoResponseDTO;
 import com.MundoLaptop.MundoLaptopBackend.dto.UsuarioDTO.UsuarioRequestDTO;
 import com.MundoLaptop.MundoLaptopBackend.dto.UsuarioDTO.UsuarioResponseDTO;
 import com.MundoLaptop.MundoLaptopBackend.model.Usuario;
+import com.MundoLaptop.MundoLaptopBackend.model.Venta;
 import com.MundoLaptop.MundoLaptopBackend.repository.UsuarioRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -59,20 +61,23 @@ public class UsuarioService {
 
     public boolean eliminarUsuario(Long id) {
         if (usuarioRepository.existsById(id)) {
-            return false;
+            usuarioRepository.deleteById(id);
+            return true;
         }
-        usuarioRepository.deleteById(id);
-        return true;
+        return false;
     }
 
     private UsuarioResponseDTO mapearAUsuarioResponseDTO(Usuario usuario) {
-        List<OrdenDeMatenimientoResponseDTO> Orden_mantenimiento = usuario.getOrdenesDeMantenimiento()
+        List<OrdenDeMantenimientoResponseDTO> Orden_mantenimiento = usuario.getOrdenesDeMantenimiento()
                 .stream()
-                .map(orden -> new OrdenDeMatenimientoResponseDTO(
+                .map(orden -> new OrdenDeMantenimientoResponseDTO(
                         orden.getId(),
-                        orden.getDescripcion(),
-                        orden.getFecha(),
-                        orden.getUsuario().getId()
+                        orden.getEstadoOrden(),
+                        orden.getDiagnosticoNotas(),
+                        orden.getUsuario().getId(),
+                        orden.getUsuario().getNombre(),
+                        orden.getServicio().getId(),
+                        orden.getServicio().getNombre()
                 ))
                 .toList();
         return new UsuarioResponseDTO(
@@ -81,7 +86,8 @@ public class UsuarioService {
                 usuario.getEmail(),
                 usuario.getPassword(),
                 usuario.getTelefono(),
-                Orden_mantenimiento
+                Orden_mantenimiento,
+                usuario.getVentas()
         );
     }
 }

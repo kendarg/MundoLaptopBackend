@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.util.List;
+import java.util.ArrayList;
 
 @Entity
 @Table(name = "usuarios")
@@ -31,4 +33,10 @@ public class Usuario {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private RolUsuario rol = RolUsuario.NORMAL;
+
+    @OneToMany(mappedBy = "usuario")
+    private List<OrdenDeMantenimiento> ordenesDeMantenimiento = new ArrayList<>();
+
+    @OneToMany(mappedBy = "cliente")
+    private List<Venta> ventas = new ArrayList<>();
 }

@@ -11,9 +11,7 @@ public record FacturaResponseDTO (
         Date fechaFacturacion,
         double montoSubtotal,
         double impuestos,
-        double montoTotal,
-        List<UsuarioResponseDTO> usuarios
-){
-}
+        double montoTotal
+){ }
 
 
