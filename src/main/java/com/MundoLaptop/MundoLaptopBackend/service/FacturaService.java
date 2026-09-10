@@ -47,13 +47,13 @@ public class FacturaService {
     public Optional<FacturaResponseDTO> actualizarFactura(Long id, FacturaRequestDTO dto) {
         return facturasRepository.findById(id)
                 .map(factura -> {
-                    factura.setNumeroFactura(dto.NumeroFactura());
-                    factura.setFechaFacturacion(dto.FechaFacturacion());
-                    factura.setMontoSubtotal(dto.MontoSubtotal());
-                    factura.setImpuestos(dto.Impuestos());
-                    factura.setMontoTotal(dto.MontoTotal());
+                    factura.setNumeroFactura(dto.numeroFactura());
+                    factura.setFechaFacturacion(dto.fechaFacturacion());
+                    factura.setMontoSubtotal(dto.montoSubtotal());
+                    factura.setImpuestos(dto.impuestos());
+                    factura.setMontoTotal(dto.montoTotal());
                     Factura actualizado = facturasRepository.save(factura);
-                    return convertToResponse(actualizado);
+                    return mapearAUsuarioResponseDTO(actualizado);
                 });
     }
 
@@ -67,16 +67,6 @@ public class FacturaService {
     }
 
     private  FacturaResponseDTO mapearAUsuarioResponseDTO(Factura factura) {
-        List<VentaResponseDTO> ventasResponse = factura.getUsuario()
-                .stream()
-                .map(venta -> new VentaResponseDTO(
-                        venta.getId(),
-                        venta.getProducto(),
-                        venta.getCantidad(),
-                        venta.getPrecioUnitario(),
-                        venta.getTotal()
-                ))
-                .toList();
 
         return  new FacturaResponseDTO(
                 factura.getId(),
@@ -84,7 +74,7 @@ public class FacturaService {
                 factura.getFechaFacturacion(),
                 factura.getMontoSubtotal(),
                 factura.getImpuestos(),
-                factura.getMontoTotal(),
+                factura.getMontoTotal()
         );
     }
 }
