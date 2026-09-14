@@ -3,6 +3,7 @@ package com.MundoLaptop.MundoLaptopBackend.service;
 import com.MundoLaptop.MundoLaptopBackend.dto.OrdenDeMantenimientoDTO.OrdenDeMantenimientoResponseDTO;
 import com.MundoLaptop.MundoLaptopBackend.dto.UsuarioDTO.UsuarioRequestDTO;
 import com.MundoLaptop.MundoLaptopBackend.dto.UsuarioDTO.UsuarioResponseDTO;
+import com.MundoLaptop.MundoLaptopBackend.exception.EmailDuplicadoException;
 import com.MundoLaptop.MundoLaptopBackend.model.Usuario;
 import com.MundoLaptop.MundoLaptopBackend.repository.UsuarioRepository;
 
@@ -38,7 +39,7 @@ public class UsuarioService {
         usuario.setTelefono(datos.telefono());
         Usuario creado = usuarioRepository.save(usuario);
         usuario.setRol(datos.rol());
-        return new UsuarioResponseDTO(creado.getId(), creado.getNombre(), creado.getRol());
+        return new UsuarioResponseDTO(creado.getId(), creado.getNombre(), creado.getRol(), creado.getOrdenesDeMantenimiento());
     }
 
 
@@ -96,7 +97,7 @@ public class UsuarioService {
                 usuario.getId(),
                 usuario.getNombre(),
                 usuario.getRol(),
-                Orden_mantenimiento
+                usuario.getOrdenesDeMantenimiento()
 
         );
     }
