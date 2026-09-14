@@ -1,7 +1,6 @@
 package com.MundoLaptop.MundoLaptopBackend.security;
 
 import com.MundoLaptop.MundoLaptopBackend.model.Usuario;
-
 import com.MundoLaptop.MundoLaptopBackend.repository.UsuarioRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -42,11 +41,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String token = header.substring(7);
             String username = jwtService.extraerEmail(token);
             Usuario usuario = usuarioRepository.findByEmail(username).orElseThrow();
-          //  Usuario usuario = usuarioRepository.findByEmail(username).orElseThrow();
 
-            var autoridad = new SimpleGrantedAuthority("ROLE_" + usuario.getRol().name());
-            var autenticacion = new UsernamePasswordAuthenticationToken(usuario.getEmail(), null, List.of(autoridad));
+            // 1. Convertimos el nombre del rol a Mayúsculas y eliminamos espacios
+            String rolUpper = usuario.getRol().name().toUpperCase().trim();
+
+            // 2. Asignamos tanto la autoridad directa como la versión con prefijo ROLE_
+            List<SimpleGrantedAuthority> autoridades = List.of(
+                    new SimpleGrantedAuthority(rolUpper),          // "ADMINISTRADOR"
+                    new SimpleGrantedAuthority("ROLE_" + rolUpper) // "ROLE_ADMINISTRADOR"
+            );
+
+            // 3. Creamos el objeto de autenticación con el usuario y las autoridades
+            var autenticacion = new UsernamePasswordAuthenticationToken(usuario.getEmail(), null, autoridades);
             SecurityContextHolder.getContext().setAuthentication(autenticacion);
+
         } catch (Exception e) {
             SecurityContextHolder.clearContext();
         }

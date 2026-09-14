@@ -12,8 +12,8 @@ public record ProductoRequestDTO(
         @Size(min = 8, max = 50, message = "El nombre debe tener entre 8 y 50 caracteres")
         String nombre,
 
-        @NotEmpty(message = "El nombre puede ser null ni puede estar vacio.")
-        @Size(min = 10, max = 10, message = "El numero de serie debe tener entre 10 caracteres")
+
+        @Size(min = 5, max = 30, message = "El numero de serie debe tener entre 5 y 30 caracteres")
 
         String numeroSerie,
         @NotNull(message = "Debe ingresar id de categoria.")
