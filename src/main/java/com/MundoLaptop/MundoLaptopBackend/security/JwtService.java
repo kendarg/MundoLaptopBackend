@@ -28,7 +28,7 @@
             Date expiracion = new Date(ahora.getTime() + EXPIRACION_MS);
 
             return Jwts.builder()
-                    .subject(usuario.getId().toString())
+                    .subject(usuario.getEmail())
                     .claim("rol", usuario.getRol().name())
                     .issuedAt(ahora)
                     .expiration(expiracion)
@@ -38,6 +38,7 @@
 
         public String extraerEmail(String token) {
             return Jwts.parser()
+
                     .verifyWith(obtenerLlave())
                     .build()
                     .parseSignedClaims(token)
