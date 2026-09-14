@@ -1,15 +1,11 @@
 package com.MundoLaptop.MundoLaptopBackend.dto.UsuarioDTO;
 
-import java.util.List;
+import com.MundoLaptop.MundoLaptopBackend.model.RolUsuario;
 
 public record UsuarioResponseDTO(
         Long id,
         String nombre,
-        String email,
-        String password,
-        int telefono,
-        List Orden_mantenimiento,
-        List Ventas
+        RolUsuario rol
 ) {
 }
 

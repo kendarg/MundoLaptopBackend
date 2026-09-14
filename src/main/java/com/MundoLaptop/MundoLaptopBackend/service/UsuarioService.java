@@ -4,8 +4,11 @@ import com.MundoLaptop.MundoLaptopBackend.dto.OrdenDeMantenimientoDTO.OrdenDeMan
 import com.MundoLaptop.MundoLaptopBackend.dto.UsuarioDTO.UsuarioRequestDTO;
 import com.MundoLaptop.MundoLaptopBackend.dto.UsuarioDTO.UsuarioResponseDTO;
 import com.MundoLaptop.MundoLaptopBackend.model.Usuario;
-import com.MundoLaptop.MundoLaptopBackend.model.Venta;
 import com.MundoLaptop.MundoLaptopBackend.repository.UsuarioRepository;
+
+
+import jakarta.validation.constraints.Email;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,9 +20,27 @@ public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
 
-    public UsuarioService(UsuarioRepository usuarioRepository) {
+    private final PasswordEncoder passwordEncoder;
+
+    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
+        this.passwordEncoder = passwordEncoder;
     }
+    public UsuarioResponseDTO crearUsuario(UsuarioRequestDTO datos) {
+        if (usuarioRepository.findByEmail(datos.email()).isPresent()) {
+            throw new EmailDuplicadoException("Ya existe una cuenta con ese Email " + datos.email());
+        }
+
+        Usuario usuario = new Usuario();
+        usuario.setNombre(datos.nombre());
+        usuario.setEmail(datos.email());
+        usuario.setPassword(passwordEncoder.encode(datos.password()));
+        usuario.setTelefono(datos.telefono());
+        Usuario creado = usuarioRepository.save(usuario);
+        usuario.setRol(datos.rol());
+        return new UsuarioResponseDTO(creado.getId(), creado.getNombre(), creado.getRol());
+    }
+
 
     @Transactional(readOnly = true)
     public List<UsuarioResponseDTO> listarUsuarios() {
@@ -35,16 +56,7 @@ public class UsuarioService {
                 .map(this::mapearAUsuarioResponseDTO);
     }
 
-    @Transactional
-    public UsuarioResponseDTO crearUsuario(UsuarioRequestDTO datos) {
-        Usuario usuario = new Usuario();
-        usuario.setNombre(datos.nombre());
-        usuario.setEmail(datos.email());
-        usuario.setPassword(datos.password());
-        usuario.setTelefono(datos.telefono());
-        Usuario creado = usuarioRepository.save(usuario);
-        return mapearAUsuarioResponseDTO(creado);
-    }
+
 
     @Transactional
     public Optional<UsuarioResponseDTO> actualizarUsuario(Long id, UsuarioRequestDTO datos) {
@@ -83,11 +95,9 @@ public class UsuarioService {
         return new UsuarioResponseDTO(
                 usuario.getId(),
                 usuario.getNombre(),
-                usuario.getEmail(),
-                usuario.getPassword(),
-                usuario.getTelefono(),
-                Orden_mantenimiento,
-                usuario.getVentas()
+                usuario.getRol(),
+                Orden_mantenimiento
+
         );
     }
 }
