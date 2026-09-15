@@ -42,6 +42,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // Peticiones Preflight CORS
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers(
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/swagger-ui.html"
+                            ).permitAll()
 
                         // Autenticación y Registro
                         .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
