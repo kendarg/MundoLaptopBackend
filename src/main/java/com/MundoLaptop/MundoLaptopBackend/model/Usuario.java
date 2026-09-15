@@ -28,7 +28,7 @@ public class Usuario {
     private String password;
 
     @Column(nullable = false)
-    private int telefono;
+    private long telefono;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
