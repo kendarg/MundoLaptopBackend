@@ -8,6 +8,7 @@ import java.util.List;
 public record UsuarioResponseDTO<OrdenMantenimientoResponseDTO>(
         Long id,
         String nombre,
+        String email,
         RolUsuario rol,
         List<OrdenMantenimientoResponseDTO> ordenesDeMantenimiento
 ) {

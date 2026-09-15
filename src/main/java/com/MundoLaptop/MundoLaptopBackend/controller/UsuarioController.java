@@ -1,8 +1,10 @@
 package com.MundoLaptop.MundoLaptopBackend.controller;
 
+import com.MundoLaptop.MundoLaptopBackend.dto.UsuarioDTO.RolRequestDTO;
 import com.MundoLaptop.MundoLaptopBackend.dto.UsuarioDTO.UsuarioRequestDTO;
 import com.MundoLaptop.MundoLaptopBackend.dto.UsuarioDTO.UsuarioResponseDTO;
 import com.MundoLaptop.MundoLaptopBackend.service.UsuarioService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -37,10 +39,10 @@ public class UsuarioController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UsuarioResponseDTO> actualizar(@PathVariable Long id, @RequestBody UsuarioRequestDTO dto) {
+    public ResponseEntity<UsuarioResponseDTO> actualizar (@PathVariable Long id, @RequestBody UsuarioRequestDTO dto) {
         return usuarioService.actualizarUsuario(id, dto)
                 .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+                .orElse(ResponseEntity.notFound().build ());
     }
 
     @DeleteMapping("/{id}")
@@ -48,6 +50,15 @@ public class UsuarioController {
         return usuarioService.eliminarUsuario(id)
                 ? ResponseEntity.noContent().build()
                 : ResponseEntity.notFound().build();
+    }
+
+    @PatchMapping("/{id}/rol")
+    public ResponseEntity<UsuarioResponseDTO> cambiarRol(
+            @PathVariable Long id,
+            @Valid @RequestBody RolRequestDTO dto) {
+        return usuarioService.cambiarRolUsuario(id, dto.rol())
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 }
 
