@@ -4,6 +4,7 @@ import com.MundoLaptop.MundoLaptopBackend.dto.OrdenDeMantenimientoDTO.OrdenDeMan
 import com.MundoLaptop.MundoLaptopBackend.dto.UsuarioDTO.UsuarioRequestDTO;
 import com.MundoLaptop.MundoLaptopBackend.dto.UsuarioDTO.UsuarioResponseDTO;
 import com.MundoLaptop.MundoLaptopBackend.exception.EmailDuplicadoException;
+import com.MundoLaptop.MundoLaptopBackend.model.RolUsuario;
 import com.MundoLaptop.MundoLaptopBackend.model.Usuario;
 import com.MundoLaptop.MundoLaptopBackend.repository.UsuarioRepository;
 
@@ -39,7 +40,7 @@ public class UsuarioService {
         usuario.setTelefono(datos.telefono());
         Usuario creado = usuarioRepository.save(usuario);
         usuario.setRol(datos.rol());
-        return new UsuarioResponseDTO(creado.getId(), creado.getNombre(), creado.getRol(), creado.getOrdenesDeMantenimiento());
+        return new UsuarioResponseDTO(creado.getId(), creado.getNombre(), creado.getEmail(), creado.getRol(), creado.getOrdenesDeMantenimiento());
     }
 
 
@@ -55,6 +56,16 @@ public class UsuarioService {
     public Optional<UsuarioResponseDTO> buscarPorId(Long id) {
         return usuarioRepository.findById(id)
                 .map(this::mapearAUsuarioResponseDTO);
+    }
+
+    @Transactional
+    public Optional<UsuarioResponseDTO> cambiarRolUsuario(Long id, RolUsuario nuevoRol) {
+        return usuarioRepository.findById(id)
+                .map(usuario -> {
+                    usuario.setRol(nuevoRol);
+                    Usuario usuarioActualizado = usuarioRepository.save(usuario);
+                    return mapearAUsuarioResponseDTO(usuarioActualizado);
+                });
     }
 
 
@@ -96,6 +107,7 @@ public class UsuarioService {
         return new UsuarioResponseDTO(
                 usuario.getId(),
                 usuario.getNombre(),
+                usuario.getEmail(),
                 usuario.getRol(),
                 usuario.getOrdenesDeMantenimiento()
 
