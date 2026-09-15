@@ -13,7 +13,7 @@ public record UsuarioRequestDTO(
         @NotBlank(message = "La contraseña es obligatoria")
         String password,
         @NotNull(message = "El teléfono es obligatorio")
-        long telefono,
+        String telefono,
         @NotNull(message = "El rol es obligatorio")
         RolUsuario rol
 ) {
