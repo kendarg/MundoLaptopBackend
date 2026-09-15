@@ -1,5 +1,6 @@
 package com.MundoLaptop.MundoLaptopBackend.controller;
 
+import com.MundoLaptop.MundoLaptopBackend.dto.CompraDTO.CompraRequestDTO; // <-- Importamos el DTO aquí arriba
 import com.MundoLaptop.MundoLaptopBackend.dto.ProductoDTO.ProductoRequestDTO;
 import com.MundoLaptop.MundoLaptopBackend.dto.ProductoDTO.ProductoResponseDTO;
 import com.MundoLaptop.MundoLaptopBackend.service.ProductoService;
@@ -47,5 +48,17 @@ public class ProductoController {
     public ResponseEntity<Void> eliminarProducto(@PathVariable Long id) {
         productoService.eliminarProducto(id);
         return ResponseEntity.noContent().build();
+    }
+
+    // NUEVO ENDPOINT DE COMPRA (Dentro de la clase)
+
+    @PostMapping("/comprar")
+    public ResponseEntity<String> procesarCompra(@Valid @RequestBody CompraRequestDTO compraDTO) {
+        try {
+            productoService.procesarCompra(compraDTO);
+            return ResponseEntity.ok("Compra procesada con éxito. Stock actualizado.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 }

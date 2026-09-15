@@ -1,5 +1,6 @@
 package com.MundoLaptop.MundoLaptopBackend.service;
 
+import com.MundoLaptop.MundoLaptopBackend.dto.CompraDTO.CompraRequestDTO;
 import com.MundoLaptop.MundoLaptopBackend.dto.ProductoDTO.ProductoRequestDTO;
 import com.MundoLaptop.MundoLaptopBackend.dto.ProductoDTO.ProductoResponseDTO;
 import com.MundoLaptop.MundoLaptopBackend.model.Categoria;
@@ -61,7 +62,6 @@ public class ProductoService {
         producto.setCondicion(datos.condicion());
         producto.setEspecificaciones(datos.especificaciones());
 
-
         Producto creado = productoRepository.save(producto);
         return mapearAProductoResponseDTO(creado);
     }
@@ -86,7 +86,6 @@ public class ProductoService {
         productoExistente.setCondicion(datos.condicion());
         productoExistente.setEspecificaciones(datos.especificaciones());
 
-
         Producto actualizado = productoRepository.save(productoExistente);
         return mapearAProductoResponseDTO(actualizado);
     }
@@ -97,6 +96,25 @@ public class ProductoService {
             throw new RuntimeException("No se puede eliminar. Producto no encontrado con el ID: " + id);
         }
         productoRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void procesarCompra(CompraRequestDTO compraDTO) {
+        for (var item : compraDTO.items()) {
+            Producto producto = productoRepository.findById(item.id())
+                    .orElseThrow(() -> new RuntimeException("Producto no encontrado con el ID: " + item.id()));
+
+            if (producto.getStock() < item.cantidad()) {
+                throw new RuntimeException("Stock insuficiente para el producto: " + producto.getNombre() +
+                        " (Disponibles: " + producto.getStock() + ")");
+            }
+
+            // Descontar la cantidad comprada
+            producto.setStock(producto.getStock() - item.cantidad());
+
+            // Guardar el cambio en la base de datos
+            productoRepository.save(producto);
+        }
     }
 
     private ProductoResponseDTO mapearAProductoResponseDTO(Producto producto) {
