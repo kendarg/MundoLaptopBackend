@@ -32,13 +32,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String header = request.getHeader("Authorization");
 
-        if (header == null || !header.startsWith("Bearer ")) {
+        if (header == null || !header.regionMatches(true, 0, "Bearer ", 0, 7)) {
             filterChain.doFilter(request, response);
             return;
         }
 
         try {
-            String token = header.substring(7);
+            String token = header.substring(7).trim();
+            if (token.length() >= 2 && token.startsWith("\"") && token.endsWith("\"")) {
+                token = token.substring(1, token.length() - 1).trim();
+            }
+            if (token.isEmpty()) {
+                filterChain.doFilter(request, response);
+                return;
+            }
+
             String username = jwtService.extraerEmail(token);
             Usuario usuario = usuarioRepository.findByEmail(username).orElseThrow();
 

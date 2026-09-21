@@ -59,6 +59,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/marcas/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/servicios/**").permitAll()
 
+                        .requestMatchers(HttpMethod.POST, "/api/productos/comprar").hasAnyAuthority("ADMINISTRADOR", "ROLE_ADMINISTRADOR", "NORMAL", "ROLE_NORMAL", "administrador", "normal")
+
                         // Gestión administrativa de catálogo (Soporta ADMINISTRADOR en mayúsculas o minúsculas)
                         .requestMatchers(HttpMethod.POST, "/api/productos/**", "/api/categorias/**", "/api/marcas/**", "/api/servicios/**").hasAnyAuthority("ADMINISTRADOR", "ROLE_ADMINISTRADOR", "administrador", "ROLE_administrador")
                         .requestMatchers(HttpMethod.PUT, "/api/productos/**", "/api/categorias/**", "/api/marcas/**", "/api/servicios/**").hasAnyAuthority("ADMINISTRADOR", "ROLE_ADMINISTRADOR", "administrador", "ROLE_administrador")
